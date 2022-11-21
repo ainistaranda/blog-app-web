@@ -3,6 +3,19 @@ import { useState } from "react";
 export default function AddPost() {
   const [form, setForm] = useState({});
 
+  const submitPost = e => {
+    e.preventDefault()
+
+    fetch(process.env.REACT_APP_ENDPOINT, {
+      method:  'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(form),
+    })
+
+  }
+
   const handleForm = (e) => {
     setForm({...form, [e.target.name]: e.target.value})
   };
@@ -12,15 +25,17 @@ export default function AddPost() {
   return (
     <div className="container">
       <h1> AddPost </h1>
-      <form action="">
+      <form action="submit">
         <label htmlFor="">Author:</label>
-        <input name='author 'type="text" onChange={handleForm} />
+        <input name='author'type="text" onChange={handleForm} />
         <br />
         <label  htmlFor="">Text:</label>
         <input name='text' type="text" onChange={handleForm}/>
         <br />
         <label htmlFor="">Date:</label>
         <input name='date' type="date" onChange={handleForm}/>
+        <br />
+        <button type="submit" onClick={submitPost}>Add New Post</button>
       </form>
     </div>
   );
