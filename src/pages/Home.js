@@ -1,19 +1,37 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react";
 
 export default function Home() {
-useEffect(() => {
-  fetch('http://localhost:4040/')
-  .then(res => res.json())
-  .then(data => console.log(data))
-  .catch(err => console.log(err))
-}, [])
+  const [posts, setPosts] = useState([]);
 
+  useEffect(() => {
+    fetch("http://localhost:4040/")
+      .then((res) => res.json())
+      .then((data) => setPosts(data))
+      .catch((err) => console.log(err));
+  }, []);
+
+  console.log(posts);
+
+  const AllPosts = () => {
+    return (
+      <div className="posts">
+        {posts.map((item, index) => {
+          return (
+            <div className="post-item" key={item._id}>
+              <img src={`https://source.unsplash.com/random?sig=${index}`} />
+              <h4>{item.author}</h4>
+              <p>{item.text}</p>
+              <p>{item.date}</p>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
   return (
-   <div className="container">
-    <h1>Home Component</h1>
-    <div className="post">
-      allposts here
+    <div className="container">
+      <h1>Home Component</h1>
+      <AllPosts />
     </div>
-   </div>
-  )
+  );
 }
